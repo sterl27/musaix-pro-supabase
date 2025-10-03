@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export default function RegisterPage() {
   const [name, setName] = useState('')
@@ -45,8 +50,8 @@ export default function RegisterPage() {
 
       router.push('/dashboard')
       router.refresh()
-    } catch (error: any) {
-      setError(error.message)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -63,121 +68,118 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
-          <a href="/" className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent inline-block mb-2">
+          <Link href="/" className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent inline-block mb-2">
             Musaix Pro
-          </a>
-          <p className="text-zinc-400">Start creating music today</p>
+          </Link>
+          <p className="text-muted-foreground">Start creating music today</p>
         </div>
 
         {/* Register Form */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8">
-          <h1 className="text-2xl font-bold mb-6">Create Account</h1>
+        <div className="bg-card border border-border rounded-lg p-8 shadow-lg">
+          <h1 className="text-2xl font-bold text-foreground mb-6">Create Account</h1>
           
           {error && (
-            <div className="bg-red-500/10 border border-red-500/50 text-red-500 rounded-lg p-3 mb-4 text-sm">
+            <div className="bg-destructive/10 border border-destructive/50 text-destructive rounded-md p-3 mb-4 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleRegister} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">Full Name</label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="John Doe"
                 required
               />
             </div>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="you@example.com"
                 required
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">Password</label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="••••••••"
                 required
               />
             </div>
 
-            <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium mb-2">Confirm Password</label>
-              <input
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm Password</Label>
+              <Input
                 type="password"
                 id="confirm-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition"
                 placeholder="••••••••"
                 required
               />
             </div>
 
             <div className="flex items-start gap-2 text-sm">
-              <input type="checkbox" className="mt-1 rounded" required />
-              <label className="text-zinc-400">
+              <Checkbox className="mt-1" required />
+              <label className="text-muted-foreground cursor-pointer">
                 I agree to the{" "}
-                <a href="/terms" className="text-purple-500 hover:text-purple-400 transition">Terms of Service</a>
+                <Link href="/terms" className="text-primary hover:underline transition">Terms of Service</Link>
                 {" "}and{" "}
-                <a href="/privacy" className="text-purple-500 hover:text-purple-400 transition">Privacy Policy</a>
+                <Link href="/privacy" className="text-primary hover:underline transition">Privacy Policy</Link>
               </label>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition px-6 py-3 rounded-lg font-semibold disabled:opacity-50"
+              className="w-full"
             >
               {loading ? 'Creating Account...' : 'Create Account'}
-            </button>
+            </Button>
           </form>
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 border-t border-zinc-700"></div>
-            <span className="text-zinc-500 text-sm">OR</span>
-            <div className="flex-1 border-t border-zinc-700"></div>
+            <div className="flex-1 border-t border-border"></div>
+            <span className="text-muted-foreground text-sm">OR</span>
+            <div className="flex-1 border-t border-border"></div>
           </div>
 
           {/* Social Register */}
           <div className="space-y-3">
-            <button 
+            <Button 
               onClick={handleGoogleSignup}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 transition px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-3"
+              variant="outline"
+              className="w-full flex items-center justify-center gap-3"
             >
               <span>🔗</span> Sign up with Google
-            </button>
+            </Button>
           </div>
 
           {/* Login Link */}
-          <p className="text-center text-zinc-400 text-sm mt-6">
+          <p className="text-center text-muted-foreground text-sm mt-6">
             Already have an account?{" "}
-            <a href="/login" className="text-purple-500 hover:text-purple-400 transition font-medium">
+            <Link href="/login" className="text-primary hover:underline transition font-medium">
               Login here
-            </a>
+            </Link>
           </p>
         </div>
       </div>
